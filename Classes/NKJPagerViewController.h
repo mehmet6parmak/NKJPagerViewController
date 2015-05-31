@@ -21,8 +21,10 @@
 
 @property id<NKJPagerViewDataSource> dataSource;
 @property id<NKJPagerViewDelegate> delegate;
+@property (nonatomic) BOOL gestureEnabled;
 
 - (void)setActiveContentIndex:(NSInteger)index;
+- (void)setGestureEnabled:(BOOL)gestureEnabled;
 
 @property CGFloat heightOfTabView;
 @property CGFloat yPositionOfTabView;

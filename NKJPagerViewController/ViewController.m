@@ -22,6 +22,9 @@
     self.delegate = self;
 
     [super viewDidLoad];
+    
+    [self setGestureEnabled:NO];
+    
 }
 
 - (void)didReceiveMemoryWarning

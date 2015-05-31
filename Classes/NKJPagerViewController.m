@@ -19,6 +19,8 @@
 @property CGFloat leftTabIndex;
 @property NSInteger tabCount;
 @property UIPageViewController *pageViewController;
+@property UISwipeGestureRecognizer *leftSwipeGestureRecognizer;
+@property UISwipeGestureRecognizer *rightSwipeGestureRecognizer;
 
 @property (nonatomic) NSInteger activeContentIndex;
 @property (nonatomic) NSInteger activeTabIndex;
@@ -44,6 +46,24 @@
         [self defaultSettings];
     }
     return self;
+}
+
+- (void)setGestureEnabled:(BOOL)gestureEnabled
+{
+    _gestureEnabled = gestureEnabled;
+    if (_gestureEnabled == NO && self.pageViewController != nil) {
+        for (UIScrollView *view in self.pageViewController.view.subviews) {
+            if ([view isKindOfClass:[UIScrollView class]]) {
+                view.scrollEnabled = NO;
+            }
+        }
+    } else if (self.pageViewController != nil) {
+        for (UIScrollView *view in self.pageViewController.view.subviews) {
+            if ([view isKindOfClass:[UIScrollView class]]) {
+                view.scrollEnabled = NO;
+            }
+        }
+    }
 }
 
 - (void)defaultSettings
@@ -97,13 +117,13 @@
 
         [self.view insertSubview:self.tabsView atIndex:0];
 
-        UISwipeGestureRecognizer *leftSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeGesture:)];
-        leftSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
-        [self.tabsView addGestureRecognizer:leftSwipeGestureRecognizer];
+        self.leftSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeGesture:)];
+        self.leftSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionLeft;
+        [self.tabsView addGestureRecognizer:self.leftSwipeGestureRecognizer];
 
-        UISwipeGestureRecognizer *rightSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeGesture:)];
-        rightSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
-        [self.tabsView addGestureRecognizer:rightSwipeGestureRecognizer];
+        self.rightSwipeGestureRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeGesture:)];
+        self.rightSwipeGestureRecognizer.direction = UISwipeGestureRecognizerDirectionRight;
+        [self.tabsView addGestureRecognizer:self.rightSwipeGestureRecognizer];
     }
 
     NSInteger contentSizeWidth = 0;
